@@ -28,8 +28,8 @@ type FSPointDist2Q struct {
 
 // main function
 func main() {
-	if len(os.Args) != 4 {
-		fmt.Println("Error - try again using this format:\n go run . <dataset name> <num_points> <dimensionality>")
+	if len(os.Args) != 5 {
+		fmt.Println("Error - try again using this format:\n go run . <dataset name> <num_points> <dimensionality> <num queries>")
 		return
 	}
 
@@ -38,6 +38,7 @@ func main() {
 	n, _ := strconv.Atoi(os.Args[2])
 	d, _ := strconv.Atoi(os.Args[3])
 	// k, _ := strconv.Atoi(os.Args[4]) - moved for now as we are doing GT
+	nq, _ := strconv.Atoi(os.Args[4])
 
 	fmt.Printf("🔍 Loading dataset: %s with %d points of %d dimensions\n", dataset, n, d)
 
@@ -57,10 +58,10 @@ func main() {
 
 	hyperplanes := readHyperplanes(queriesData, d)
 
-	exhaustiveFS(dataset, points, hyperplanes, d) //Remember k here at some point
+	exhaustiveFS(dataset, points, hyperplanes, nq) //Remember k here at some point
 	fmt.Println("FS is done")
 
-	exhaustivePQ(dataset, points, hyperplanes, d) //Remember k here at some point
+	exhaustivePQ(dataset, points, hyperplanes, nq) //Remember k here at some point
 	fmt.Println("PQ is done")
 }
 
@@ -87,7 +88,7 @@ func readBinaryFile(filepath string) ([]byte, error) {
 }
 
 // this function is used for writing the results of the full sort to a file
-func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, d int) {
+func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq int) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs.gt")
 	if err != nil {
@@ -97,7 +98,7 @@ func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 	defer outfile.Close()
 
 	// Write header - 100 hyperplanes, 100 points
-	fmt.Fprintf(outfile, "%d,%d\n", d, 100)
+	fmt.Fprintf(outfile, "%d,%d\n", nq, nq)
 
 	//use timer from library
 	start := time.Now()
@@ -129,7 +130,7 @@ func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 	fmt.Printf("FS took %s\n", elapsed)
 }
 
-func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, d int) {
+func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq int) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".pq.gt")
 	if err != nil {
@@ -139,7 +140,7 @@ func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 	defer outfile.Close()
 
 	// Write header to csv file
-	fmt.Fprintf(outfile, "%d,%d\n", d, 100)
+	fmt.Fprintf(outfile, "%d,%d\n", nq, nq)
 
 	//use timer from library
 	start := time.Now()
