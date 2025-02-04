@@ -40,8 +40,6 @@ func main() {
 	// k, _ := strconv.Atoi(os.Args[4]) - moved for now as we are doing GT
 	nq, _ := strconv.Atoi(os.Args[4])
 
-	fmt.Printf("🔍 Loading dataset: %s with %d points of %d dimensions\n", dataset, n, d)
-
 	pointsData, err := readBinaryFile("data/datasets/" + dataset + ".ds")
 	if err != nil {
 		fmt.Printf("Error reading dataset file: %v\n", err)
@@ -53,9 +51,10 @@ func main() {
 		fmt.Printf("Error reading query file: %v\n", err)
 		os.Exit(1)
 	}
-
+	fmt.Printf("🔍 Loading dataset: %s with %d points of %d dimensions\n", dataset, n, d)
 	points := readPoints(pointsData, n, d)
 
+	fmt.Printf("🔍 Loading %d hyperplane queries\n", nq)
 	hyperplanes := readHyperplanes(queriesData, d)
 
 	exhaustiveFS(dataset, points, hyperplanes, nq) //Remember k here at some point
@@ -85,6 +84,50 @@ func readBinaryFile(filepath string) ([]byte, error) {
 	}
 
 	return data, nil
+}
+
+func readPoints(data []byte, n int, d int) []priorityqueue.Point {
+	totalValues := d + 1 // Each entry has d float32 + 1 delimiter - the delimiter is used
+	points := make([]priorityqueue.Point, n)
+
+	for i := 0; i < n; i++ {
+		startIndex := i * totalValues
+
+		// Read feature vector (first d values)
+		points[i] = priorityqueue.Point{
+			ID:          i, // Assign sequential ID
+			Coordinates: make([]float32, d),
+		}
+		for j := 0; j < d; j++ {
+			bits := binary.LittleEndian.Uint32(data[(startIndex+j)*4 : (startIndex+j+1)*4])
+			points[i].Coordinates[j] = math.Float32frombits(bits)
+		}
+		// Ignore the last value (which is always 1.0)
+
+	}
+
+	fmt.Printf("Loaded points 🧙‍♂️\n")
+	return points
+}
+
+func readHyperplanes(querydata []byte, d int) []Hyperplane {
+	hyperplanes := make([]Hyperplane, 100)
+	for i := 0; i < 100; i++ {
+		query := Hyperplane{
+			Q: make([]float32, d),
+			B: 0.0,
+		}
+		movePosition := i * (d + 1) * 4 // Move position in file by (d+1)*4 bytes for each hyperplane
+		for j := 0; j < d; j++ {
+			bits := binary.LittleEndian.Uint32(querydata[movePosition+(j*4) : movePosition+(j+1)*4])
+			query.Q[j] = math.Float32frombits(bits)
+		}
+		Bbits := binary.LittleEndian.Uint32(querydata[movePosition+(d*4) : movePosition+(d+1)*4])
+		query.B = math.Float32frombits(Bbits)
+		hyperplanes[i] = query
+	}
+	fmt.Printf("Loaded hyperplanes 🛩️\n")
+	return hyperplanes
 }
 
 // this function is used for writing the results of the full sort to a file
@@ -172,50 +215,6 @@ func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("PQ took %s\n", elapsed)
-}
-
-func readPoints(data []byte, n int, d int) []priorityqueue.Point {
-	totalValues := d + 1 // Each entry has d float32 + 1 delimiter - the delimiter is used
-	points := make([]priorityqueue.Point, n)
-
-	for i := 0; i < n; i++ {
-		startIndex := i * totalValues
-
-		// Read feature vector (first d values)
-		points[i] = priorityqueue.Point{
-			ID:          i, // Assign sequential ID
-			Coordinates: make([]float32, d),
-		}
-		for j := 0; j < d; j++ {
-			bits := binary.LittleEndian.Uint32(data[(startIndex+j)*4 : (startIndex+j+1)*4])
-			points[i].Coordinates[j] = math.Float32frombits(bits)
-		}
-		// Ignore the last value (which is always 1.0)
-
-	}
-
-	fmt.Printf("Loaded points\n")
-	return points
-}
-
-func readHyperplanes(querydata []byte, d int) []Hyperplane {
-	hyperplanes := make([]Hyperplane, 100)
-	for i := 0; i < 100; i++ {
-		query := Hyperplane{
-			Q: make([]float32, d),
-			B: 0.0,
-		}
-		movePosition := i * (d + 1) * 4 // Move position in file by (d+1)*4 bytes for each hyperplane
-		for j := 0; j < d; j++ {
-			bits := binary.LittleEndian.Uint32(querydata[movePosition+(j*4) : movePosition+(j+1)*4])
-			query.Q[j] = math.Float32frombits(bits)
-		}
-		Bbits := binary.LittleEndian.Uint32(querydata[movePosition+(d*4) : movePosition+(d+1)*4])
-		query.B = math.Float32frombits(Bbits)
-		hyperplanes[i] = query
-	}
-
-	return hyperplanes
 }
 
 func (h *Hyperplane) dist(p *priorityqueue.Point) float32 {
