@@ -28,17 +28,19 @@ type FSPointDist2Q struct {
 
 // main function
 func main() {
-	if len(os.Args) != 5 {
-		fmt.Println("Error - try again using this format:\n go run . <dataset name> <num_points> <dimensionality> <num queries>")
+	if len(os.Args) != 6 {
+		fmt.Println("Error - try again using this format:\n go run . <dataset name> <num_points> <dimensionality> <num queries> <k>")
 		return
 	}
+	//GT mode 'go run . Cifar 50000 512 100 100'
+	//knn mode 'go run . Cifar 50000 512 100 10'
 
 	// Read command-line arguments
 	dataset := os.Args[1]
 	n, _ := strconv.Atoi(os.Args[2])
 	d, _ := strconv.Atoi(os.Args[3])
-	// k, _ := strconv.Atoi(os.Args[4]) - moved for now as we are doing GT
 	nq, _ := strconv.Atoi(os.Args[4])
+	k, _ := strconv.Atoi(os.Args[5])
 
 	pointsData, err := readBinaryFile("data/datasets/" + dataset + ".ds")
 	if err != nil {
@@ -57,10 +59,17 @@ func main() {
 	fmt.Printf("🔍 Loading %d hyperplane queries\n", nq)
 	hyperplanes := readHyperplanes(queriesData, d)
 
-	exhaustiveFS(dataset, points, hyperplanes, nq) //Remember k here at some point
+	// Allow flexibility between GT and single query
+	isGroundTruth := k == 100 && nq == 100 // GT mode when k=100 and nq=100
+	suffix := ".gt"
+	if !isGroundTruth {
+		suffix = fmt.Sprintf(".nq%d.k%d", nq, k)
+	}
+
+	exhaustiveFS(dataset, points, hyperplanes, nq, k, suffix)
 	fmt.Println("FS is done")
 
-	exhaustivePQ(dataset, points, hyperplanes, nq) //Remember k here at some point
+	exhaustivePQ(dataset, points, hyperplanes, nq, k, suffix)
 	fmt.Println("PQ is done")
 }
 
@@ -106,7 +115,7 @@ func readPoints(data []byte, n int, d int) []priorityqueue.Point {
 
 	}
 
-	fmt.Printf("Loaded points 🧙‍♂️\n")
+	fmt.Printf("Loaded points 🧙 \n")
 	return points
 }
 
@@ -126,28 +135,28 @@ func readHyperplanes(querydata []byte, d int) []Hyperplane {
 		query.B = math.Float32frombits(Bbits)
 		hyperplanes[i] = query
 	}
-	fmt.Printf("Loaded hyperplanes 🛩️\n")
+	fmt.Printf("Loaded hyperplanes 🧹 \n")
 	return hyperplanes
 }
 
 // this function is used for writing the results of the full sort to a file
-func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq int) {
+func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq, k int, suffix string) {
 	// create a file to write the results to
-	outfile, err := os.Create("data/results/" + dataset + ".fs.gt")
+	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
 		fmt.Println("Error creating results file:", err)
 		return
 	}
 	defer outfile.Close()
 
-	// Write header - 100 hyperplanes, 100 points
-	fmt.Fprintf(outfile, "%d,%d\n", nq, nq)
+	// Write header - now with flexible nq and k
+	fmt.Fprintf(outfile, "%d,%d\n", nq, k)
 
 	//use timer from library
 	start := time.Now()
 
 	// For each hyperplane check all points and their distance to the hyperplane
-	for i := 0; i < 100; i++ {
+	for i := 0; i < nq; i++ {
 		fmt.Fprintf(outfile, "%d", i+1)
 
 		// Sort all points by distance to this hyperplane
@@ -162,8 +171,8 @@ func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 			return allPoints[a].Dist < allPoints[b].Dist
 		})
 
-		// Write 100 nearest neighbors
-		for j := 0; j < 100; j++ {
+		// Write k nearest neighbors (instead of fixed 100)
+		for j := 0; j < k; j++ {
 			fmt.Fprintf(outfile, ",%d,%.9f", allPoints[j].Point.ID+1, allPoints[j].Dist)
 		}
 		fmt.Fprintln(outfile)
@@ -173,23 +182,23 @@ func exhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 	fmt.Printf("FS took %s\n", elapsed)
 }
 
-func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq int) {
+func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hyperplane, nq, k int, suffix string) {
 	// create a file to write the results to
-	outfile, err := os.Create("data/results/" + dataset + ".pq.gt")
+	outfile, err := os.Create("data/results/" + dataset + ".pq" + suffix)
 	if err != nil {
 		fmt.Println("Error creating results file:", err)
 		return
 	}
 	defer outfile.Close()
 
-	// Write header to csv file
-	fmt.Fprintf(outfile, "%d,%d\n", nq, nq)
+	// Write header with flexible nq and k
+	fmt.Fprintf(outfile, "%d,%d\n", nq, k)
 
 	//use timer from library
 	start := time.Now()
 
 	// For each hyperplane create a priority queue and add all points to it with their distance to that hyperplane
-	for i := 0; i < 100; i++ {
+	for i := 0; i < nq; i++ {
 		fmt.Fprintf(outfile, "%d", i+1)
 
 		// Create priority queue
@@ -206,8 +215,8 @@ func exhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []Hy
 			heap.Push(&pq, item)
 		}
 
-		// Get 100 nearest neighbors
-		for j := 0; j < 100; j++ {
+		// Get k nearest neighbors (instead of fixed 100)
+		for j := 0; j < k; j++ {
 			item := heap.Pop(&pq).(*priorityqueue.PQPointDist2Q)
 			fmt.Fprintf(outfile, ",%d,%.9f", item.Point.ID+1, item.Dist)
 		}
