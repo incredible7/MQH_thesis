@@ -44,3 +44,11 @@ python scripts/download_datasets.py
 ```
 
 ## To run the exhaustive search
+
+```bash
+go get github.com/chewxy/math32
+go run . <dataset_name(eg. Cifar)> <num_points> <dimensionality> <k>
+```
+
+Exhaustive searchPQ is inspired from (this link)[https://pkg.go.dev/container/heap#example-package-PriorityQueue].
+
