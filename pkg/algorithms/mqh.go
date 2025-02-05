@@ -74,7 +74,7 @@ func MQH(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyper
 
 		Now we need to implement NERQ. THis will be represented as a recursive structure where points are quantized through 3 levels, for each level the residuals of the previous levels are used. And initially the residuals used, for it's first level are calculated from the coarse quantization, so from the distance of each point to it's coarse centroid. For the NERQ we will want to represent every point as 16 parts, where each part is this points normalvectors d/16.
 		Now one of these will be based on relative norm and the other 15 on angle in each level.
-		Now in each level we need to do codebook training, then quantization and then finally we want to use LSH so as to be able to represent each point through an m-bit code to easily be able to compare points later in the search algorithm based on hamming distance.
+		Now in each level we need to do codebook training, then quantization and then finally we want to use LSH so as to be able to represent each point through an m-bit code to easily be able to compare points later in the search algorithm based on hamming distance. Possible LSH library: https://github.com/ekzhu/lsh
 		We also need to store quantization codes and hashing codes in each level in a proper structure.
 
 
