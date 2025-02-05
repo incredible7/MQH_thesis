@@ -6,7 +6,7 @@ type Point struct {
 	Coordinates []float32
 }
 
-// PointDist2Q represents a point and its distance to a query point in the priority queue
+// PointDist2Q represents a point and its distance to a query in the priority queue
 type PQPointDist2Q struct {
 	Point Point
 	Dist  float32

@@ -43,11 +43,10 @@ pip install gdown
 python scripts/download_datasets.py
 ```
 
-## To run the exhaustive search
+## To run main function in GT mode?
 
 ```bash
-go get github.com/chewxy/math32
-go run . <dataset_name(eg. Cifar)> <num_points> <dimensionality> <k>
+go run cmd/benchmark/main.go Cifar 50000 512 100 100
 ```
 
 Exhaustive searchPQ is inspired from (this link)[https://pkg.go.dev/container/heap#example-package-PriorityQueue].
