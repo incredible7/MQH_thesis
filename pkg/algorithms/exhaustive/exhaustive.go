@@ -1,7 +1,6 @@
 package algorithms
 
 import (
-	"MQH_THESIS/pkg/priorityqueue"
 	"MQH_THESIS/pkg/types"
 	"container/heap"
 	"fmt"
@@ -74,13 +73,13 @@ func ExhaustivePQ(dataset string, points []types.Point, hyperplanes []types.Hype
 		fmt.Fprintf(outfile, "%d", i+1)
 
 		// Create priority queue
-		pq := make(priorityqueue.DistancePriorityQueue, 0)
+		pq := make(types.DistancePriorityQueue, 0)
 		heap.Init(&pq)
 
 		// Add all points to priority queue
 		for j := range points {
 			dist := hyperplanes[i].Dist(&points[j])
-			item := &priorityqueue.PQPointDist2Q{
+			item := &types.PQPointDist2Q{
 				Point: points[j],
 				Dist:  dist,
 			}
@@ -89,7 +88,7 @@ func ExhaustivePQ(dataset string, points []types.Point, hyperplanes []types.Hype
 
 		// Get k nearest neighbors (instead of fixed 100)
 		for j := 0; j < k; j++ {
-			item := heap.Pop(&pq).(*priorityqueue.PQPointDist2Q)
+			item := heap.Pop(&pq).(*types.PQPointDist2Q)
 			fmt.Fprintf(outfile, ",%d,%.9f", item.Point.ID+1, item.Dist)
 		}
 		fmt.Fprintln(outfile)
