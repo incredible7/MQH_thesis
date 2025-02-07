@@ -5,7 +5,6 @@ import (
     "fmt"
     "math"
     "os"
-    "MQH_THESIS/pkg/priorityqueue"
     "MQH_THESIS/pkg/types"
 )
 
@@ -32,15 +31,15 @@ func ReadBinaryFile(filepath string) ([]byte, error) {
 }
 
 // ReadPoints reads points from binary data
-func ReadPoints(data []byte, n int, d int) []priorityqueue.Point {
+func ReadPoints(data []byte, n int, d int) []types.Point {
 	totalValues := d + 1 // Each entry has d float32 + 1 delimiter - the delimiter is used
-	points := make([]priorityqueue.Point, n)
+	points := make([]types.Point, n)
 
 	for i := 0; i < n; i++ {
 		startIndex := i * totalValues
 
 		// Read feature vector (first d values)
-		points[i] = priorityqueue.Point{
+		points[i] = types.Point{
 			ID:          i, // Assign sequential ID
 			Coordinates: make([]float32, d),
 		}

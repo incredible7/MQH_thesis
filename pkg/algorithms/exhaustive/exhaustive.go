@@ -11,7 +11,7 @@ import (
 )
 
 // ExhaustiveFS performs full sort search
-func ExhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
+func ExhaustiveFS(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExhaustiveFS(dataset string, points []priorityqueue.Point, hyperplanes []ty
 }
 
 // ExhaustivePQ performs priority queue based search
-func ExhaustivePQ(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
+func ExhaustivePQ(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".pq" + suffix)
 	if err != nil {

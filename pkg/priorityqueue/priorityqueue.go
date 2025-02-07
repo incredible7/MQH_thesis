@@ -1,14 +1,12 @@
 package priorityqueue
 
-// Point is defined here because it is used in the PQPointDist2Q struct
-type Point struct {
-	ID          int
-	Coordinates []float32
-}
+import (
+	"MQH_THESIS/pkg/types"
+)
 
 // PointDist2Q represents a point and its distance to a query in the priority queue
 type PQPointDist2Q struct {
-	Point Point
+	Point types.Point
 	Dist  float32
 	Index int // Required by heap.Interface
 }

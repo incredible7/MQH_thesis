@@ -1,7 +1,6 @@
 package algorithms
 
 import (
-	"MQH_THESIS/pkg/priorityqueue"
 	"MQH_THESIS/pkg/types"
 	"fmt"
 	"os"
@@ -9,7 +8,7 @@ import (
 )
 
 // ExhaustiveFS performs full sort search
-func MQH(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
+func MQH(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
@@ -47,15 +46,14 @@ func MQH(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyper
 	// 	fmt.Fprintln(outfile)
 	// }
 
-	
-	/* 
-		TODO: Coarse quantization of points 
+	/*
+		TODO: Coarse quantization of points
 		Point will be represented as:
 			type Point struct {
 				ID          int
 				Coordinates []float32
 			}
-		-> Try to implement eg. github.com/parallelo-ai/kmeans 
+		-> Try to implement eg. github.com/parallelo-ai/kmeans
 
 		Resulting in points clustered to 256 clusters.
 		Implement something like:
@@ -64,13 +62,11 @@ func MQH(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyper
 				Coordinates []float32
 			}
 
-			type Point2Centroid struct {
-				Points     []priorityqueue.Point
-				Centroid   Centroid
-			}
-			And then use eg. 
+			var m map[centroid][]priorityque.Point
+
+			And then use eg.
 		allQuantizedPoints := make([]types.Point2Centroid, len(256))
-			
+
 
 		Now we need to implement NERQ. THis will be represented as a recursive structure where points are quantized through 3 levels, for each level the residuals of the previous levels are used. And initially the residuals used, for it's first level are calculated from the coarse quantization, so from the distance of each point to it's coarse centroid. For the NERQ we will want to represent every point as 16 parts, where each part is this points normalvectors d/16.
 		Now one of these will be based on relative norm and the other 15 on angle in each level.
