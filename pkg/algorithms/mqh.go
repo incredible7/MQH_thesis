@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// ExhaustiveFS performs full sort search
-func MQH(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, suffix string) {
+// Mqh ...
+func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, n int, suffix string) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
@@ -22,6 +22,11 @@ func MQH(dataset string, points []types.Point, hyperplanes []types.Hyperplane, n
 
 	// use timer from library
 	start := time.Now()
+
+	clusters, centroids := kmeans(points, n, k, n)
+
+	fmt.Println(clusters)
+	fmt.Println(centroids)
 
 	// // For each hyperplane check all points and their distance to the hyperplane
 	// for i := 0; i < nq; i++ {

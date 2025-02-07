@@ -23,7 +23,7 @@ type FSPointDist2Q struct {
 }
 
 // Dist calculates distance from point to hyperplane
-func (h *Hyperplane) Dist(p *Point) float32 {
+func (h *Hyperplane) Dist2H(p *Point) float32 {
 	numerator := h.B
 	for i := range p.Coordinates {
 		numerator = numerator + h.Q[i]*p.Coordinates[i]
@@ -37,6 +37,16 @@ func (h *Hyperplane) Dist(p *Point) float32 {
 	}
 	denominator = float32(math32.Sqrt(denominator))
 	return numerator / denominator
+}
+
+// Dist calculates distance from point to another point
+func (i *Point) Dist2P(p *Point) float32 {
+	sum := float32(0.0)
+	for j := range i.Coordinates {
+		diff := i.Coordinates[j] - p.Coordinates[j]
+		sum += diff * diff
+	}
+	return float32(math32.Sqrt(sum))
 }
 
 /*

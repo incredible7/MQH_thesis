@@ -34,7 +34,7 @@ func ExhaustiveFS(dataset string, points []types.Point, hyperplanes []types.Hype
 
 		for j := range points {
 			allPoints[j].Point = points[j]
-			allPoints[j].Dist = hyperplanes[i].Dist(&points[j])
+			allPoints[j].Dist = hyperplanes[i].Dist2H(&points[j])
 		}
 
 		sort.Slice(allPoints, func(a, b int) bool {
@@ -78,7 +78,7 @@ func ExhaustivePQ(dataset string, points []types.Point, hyperplanes []types.Hype
 
 		// Add all points to priority queue
 		for j := range points {
-			dist := hyperplanes[i].Dist(&points[j])
+			dist := hyperplanes[i].Dist2H(&points[j])
 			item := &types.PQPointDist2Q{
 				Point: points[j],
 				Dist:  dist,

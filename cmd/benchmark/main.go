@@ -1,8 +1,7 @@
 package main
 
 import (
-	"MQH_THESIS/pkg/algorithms/exhaustive"
-	// "MQH_THESIS/pkg/algorithms/mqh"
+	"MQH_THESIS/pkg/algorithms"
 	"MQH_THESIS/pkg/utils"
 	"fmt"
 	"os"
@@ -46,8 +45,10 @@ func main() {
 	}
 
 	// Run algorithms
-	algorithms.ExhaustiveFS(dataset, points, hyperplanes, nq, k, suffix)
-	algorithms.ExhaustivePQ(dataset, points, hyperplanes, nq, k, suffix)
+	// algorithms.ExhaustiveFS(dataset, points, hyperplanes, nq, k, suffix)
+	// algorithms.ExhaustivePQ(dataset, points, hyperplanes, nq, k, suffix)
+	algorithms.Mqh(dataset, points, hyperplanes, nq, k, n, suffix)
+	
 
 	// Add your new algorithm here
 	// algorithms.NewAlgorithm(dataset, points, hyperplanes, nq, k, suffix)
