@@ -1,7 +1,8 @@
 package main
 
 import (
-	"MQH_THESIS/pkg/algorithms"
+	"MQH_THESIS/pkg/algorithms/exhaustive"
+	// "MQH_THESIS/pkg/algorithms/mqh"
 	"MQH_THESIS/pkg/utils"
 	"fmt"
 	"os"

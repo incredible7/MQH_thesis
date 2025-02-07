@@ -66,7 +66,7 @@ func MQH(dataset string, points []priorityqueue.Point, hyperplanes []types.Hyper
 
 			type Point2Centroid struct {
 				Points     []priorityqueue.Point
-				Centroid  Centroid
+				Centroid   Centroid
 			}
 			And then use eg. 
 		allQuantizedPoints := make([]types.Point2Centroid, len(256))
