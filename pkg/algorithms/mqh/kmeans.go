@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-func kmeans(data []types.Point, d int, k int, iterations int) map[int][]int {
+func kmeans(data []types.Point, d int, k int, iterations int) (map[int][]int, []types.Point) {
 	// initialize centroids
 	centroids := make([]types.Point, k)
 	copy(centroids, data[:k])
@@ -15,7 +15,8 @@ func kmeans(data []types.Point, d int, k int, iterations int) map[int][]int {
 		m = assign(data, centroids)
 		centroids = update(data, m, d, k)
 	}
-	return m
+	m = assign(data, centroids)
+	return m, centroids
 }
 
 func assign(data []types.Point, centroids []types.Point) map[int][]int {
