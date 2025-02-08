@@ -48,7 +48,7 @@ func main() {
 	// algorithms.ExhaustiveFS(dataset, points, hyperplanes, nq, k, suffix)
 	// algorithms.ExhaustivePQ(dataset, points, hyperplanes, nq, k, suffix)
 	levels := 3
-	algorithms.Mqh(dataset, points, hyperplanes, nq, d, k, n, suffix, levels)
+	algorithms.Mqh(dataset, points, hyperplanes, nq, d, n, suffix, levels)
 	
 
 	// Add your new algorithm here

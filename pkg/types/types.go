@@ -22,13 +22,15 @@ type FSPointDist2Q struct {
 	Dist  float32
 }
 
-// CodebookData represents the clustering results for a single codebook
-type Codebook struct {
-	Assignments map[int][]int // Maps centroid ID to point IDs
-	Centroids   []Point // The centroids for this codebook
+// L0Index represents the output of KMeans clustering
+type L0Index struct {
+	Centroid2Points map[int][]int
+	Centroids       []Point
+	Point2Centroid  map[int]int
+	ResidualVectors []Point
 }
 
-// Dist calculates distance from point to hyperplane
+// Dist2H calculates distance from point to hyperplane
 func (h *Hyperplane) Dist2H(p *Point) float32 {
 	numerator := h.B
 	for i := range p.Coordinates {
@@ -45,7 +47,7 @@ func (h *Hyperplane) Dist2H(p *Point) float32 {
 	return numerator / denominator
 }
 
-// Dist calculates distance from point to another point
+// Dist2P calculates distance from point to another point
 func (i *Point) Dist2P(p *Point) float32 {
 	sum := float32(0.0)
 	for j := range i.Coordinates {
@@ -53,19 +55,6 @@ func (i *Point) Dist2P(p *Point) float32 {
 		sum += diff * diff
 	}
 	return float32(math32.Sqrt(sum))
-}
-
-// Equals checks if two points have the same coordinates
-func (p *Point) Equals(other *Point) bool {
-	if len(p.Coordinates) != len(other.Coordinates) {
-		return false
-	}
-	for i, coord := range p.Coordinates {
-		if coord != other.Coordinates[i] {
-			return false
-		}
-	}
-	return true
 }
 
 /*
