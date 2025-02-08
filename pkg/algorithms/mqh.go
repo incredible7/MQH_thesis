@@ -8,7 +8,7 @@ import (
 )
 
 // Mqh ...
-func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq int, d int, k int, n int, suffix string) {
+func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq int, d int, k int, n int, suffix string, levels int) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
@@ -22,11 +22,17 @@ func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, n
 
 	// use timer from library
 	start := time.Now()
+	amntcodebooks := int(2)
 
-	clusters, centroids := kmeans(points, d, k, n)
+	codebooks := ProductKMeans(points, d, k, 2, amntcodebooks)
 
-	fmt.Println(clusters)
-	fmt.Println(centroids)
+	for i := 0; i < amntcodebooks; i++ {
+		fmt.Printf("Codebook %d:\n", i)
+		fmt.Printf("  Centroid coordinates: %v\n", codebooks[i].Centroids[0])
+		fmt.Printf("  Assigned points: %v\n\n", codebooks[i].Assignments[0])
+	}
+
+	// We want to
 
 	// // For each hyperplane check all points and their distance to the hyperplane
 	// for i := 0; i < nq; i++ {

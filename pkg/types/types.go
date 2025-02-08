@@ -22,6 +22,12 @@ type FSPointDist2Q struct {
 	Dist  float32
 }
 
+// CodebookData represents the clustering results for a single codebook
+type Codebook struct {
+	Assignments map[int][]int // Maps centroid ID to point IDs
+	Centroids   []Point // The centroids for this codebook
+}
+
 // Dist calculates distance from point to hyperplane
 func (h *Hyperplane) Dist2H(p *Point) float32 {
 	numerator := h.B
