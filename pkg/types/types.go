@@ -49,6 +49,19 @@ func (i *Point) Dist2P(p *Point) float32 {
 	return float32(math32.Sqrt(sum))
 }
 
+// Equals checks if two points have the same coordinates
+func (p *Point) Equals(other *Point) bool {
+	if len(p.Coordinates) != len(other.Coordinates) {
+		return false
+	}
+	for i, coord := range p.Coordinates {
+		if coord != other.Coordinates[i] {
+			return false
+		}
+	}
+	return true
+}
+
 /*
    Below is the priority queue implementation for the priority queue based search
 */

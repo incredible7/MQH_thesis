@@ -8,7 +8,7 @@ import (
 )
 
 // Mqh ...
-func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq, k int, n int, suffix string) {
+func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq int, d int, k int, n int, suffix string) {
 	// create a file to write the results to
 	outfile, err := os.Create("data/results/" + dataset + ".fs" + suffix)
 	if err != nil {
@@ -23,7 +23,7 @@ func Mqh(dataset string, points []types.Point, hyperplanes []types.Hyperplane, n
 	// use timer from library
 	start := time.Now()
 
-	clusters, centroids := kmeans(points, n, k, n)
+	clusters, centroids := kmeans(points, d, k, n)
 
 	fmt.Println(clusters)
 	fmt.Println(centroids)

@@ -4,7 +4,7 @@ import (
 	"MQH_THESIS/pkg/types"
 )
 
-func kmeans(data []types.Point, d int, k int, n int) (map[int][]types.Point, []types.Point) {
+func KMeans(data []types.Point, d int, k int, n int) (map[int][]types.Point, []types.Point) {
 
 	centroids := make([]types.Point, k)
 	copy(centroids, data[0:k])
