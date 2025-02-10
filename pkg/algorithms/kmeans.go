@@ -5,6 +5,10 @@ import (
 	"slices"
 )
 
+func ProductQuantization(data []types.Point, d int, k int, iterations int) types.L0Index {
+	return types.L0Index{}
+}
+
 // KMeans performs the k-means clustering algorithm on the given data points and returns L0Result struct.
 func KMeans(data []types.Point, d int, k int, iterations int) types.L0Index {
 	centroids := make([]types.Point, k)
@@ -12,12 +16,12 @@ func KMeans(data []types.Point, d int, k int, iterations int) types.L0Index {
 
 	centroid2Points := make(map[int][]int)
 
-	point2Centroid := make(map[int]int)
-
 	for i := 0; i < iterations; i++ {
 		centroid2Points = assign(data, centroids)
 		centroids = update(data, centroid2Points, d, k)
 	}
+
+	point2Centroid := make(map[int]int)
 
 	// also map from p2c as we do for c2p's..
 	for centroidID, points := range centroid2Points {

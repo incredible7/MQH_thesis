@@ -30,6 +30,10 @@ type L0Index struct {
 	ResidualVectors []Point
 }
 
+type LLIndex struct {
+	Levels []L0Index
+}
+
 // Dist2H calculates distance from point to hyperplane
 func (h *Hyperplane) Dist2H(p *Point) float32 {
 	numerator := h.B
