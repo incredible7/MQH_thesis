@@ -23,7 +23,8 @@ func ProductPartitioning(data []types.Point, d int, k int, iterations int, m int
 		subspacePoints := make([]types.Point, len(data))
 		start := i * divResult
 		end := start + divResult
-		if end > d {
+		// if i = m-1 then this must be the last subspace
+		if i == m-1 {
 			end = d
 		}
 
