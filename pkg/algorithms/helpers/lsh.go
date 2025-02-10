@@ -5,10 +5,10 @@ import (
 	"math/rand"
 )
 
-func LSH(residuals []types.Point, m int, d int) ([]types.Point, [][]int) {
+func LSH(residuals []types.Point, m int, d int) ([]types.Point, [][]bool) {
 	n := len(residuals)
 	alphas := generateAlphas(m, d)
-	hashvalues := make([][]int, n)
+	hashvalues := make([][]bool, n)
 	for i := 0; i < n; i++ {
 		hashvalues[i] = generateBitstring(residuals[i], alphas)
 	}
@@ -30,13 +30,13 @@ func generateAlphas(m int, d int) []types.Point {
 	return alphas
 }
 
-func generateBitstring(p types.Point, alphas []types.Point) []int {
-	bitstring := make([]int, len(alphas))
+func generateBitstring(p types.Point, alphas []types.Point) []bool {
+	bitstring := make([]bool, len(alphas))
 	for i, alpha := range alphas {
 		if p.Ip(alpha) >= 0 {
-			bitstring[i] = 1
+			bitstring[i] = true
 		} else {
-			bitstring[i] = 0
+			bitstring[i] = false
 		}
 	}
 	return bitstring
