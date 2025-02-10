@@ -20,7 +20,7 @@ func generateAlphas(m int, d int) []types.Point {
 	for i := 0; i < m; i++ {
 		coords := make([]float32, d)
 		for j := 0; j < d; j++ {
-			coords[j] = rand.Float32()
+			coords[j] = randomFloat32()
 		}
 		alphas[i] = types.Point{
 			ID:          i,
@@ -40,4 +40,8 @@ func generateBitstring(p types.Point, alphas []types.Point) []int {
 		}
 	}
 	return bitstring
+}
+
+func randomFloat32() float32 {
+	return -1.0 + rand.Float32()*(2.0)
 }
