@@ -5,14 +5,14 @@ import (
 	"math/rand"
 )
 
-func LSH(residuals []types.Point, m int, d int) [][]int {
+func LSH(residuals []types.Point, m int, d int) ([]types.Point, [][]int) {
 	n := len(residuals)
 	alphas := generateAlphas(m, d)
 	hashvalues := make([][]int, n)
 	for i := 0; i < n; i++ {
 		hashvalues[i] = generateBitstring(residuals[i], alphas)
 	}
-	return hashvalues
+	return alphas, hashvalues
 }
 
 func generateAlphas(m int, d int) []types.Point {
