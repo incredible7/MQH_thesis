@@ -16,6 +16,13 @@ type Hyperplane struct {
 	B float32
 }
 
+type Library struct {
+	// QuantizationCodes ??
+	ResidualVectors []Point
+	HashFunctions   []Point
+	HashCodes       [][]int
+}
+
 // FSPointDist2Q represents a point and its distance to a query point used for full sort
 type FSPointDist2Q struct {
 	Point Point
@@ -121,3 +128,8 @@ func (pq *DistancePriorityQueue) Pop() any {
 	*pq = old[0 : n-1]
 	return item
 }
+
+// Vi skal finde ud af hvordan vi egentlig forstår vores data/-strukturer. Fx har vi ikke rigtig nogen definition af hvad et
+// codeword/en codebook er. Ligenu er det som om det hele bliver lidt et miskmask af structs og slices, så måske vi skulle prøve at
+// tage den top-down, og sige hvad skal der returneres i sidste ende og så bryde det ned derfra.
+//

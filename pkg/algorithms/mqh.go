@@ -1,6 +1,7 @@
 package algorithms
 
 import (
+	"MQH_THESIS/pkg/algorithms/helpers"
 	"MQH_THESIS/pkg/types"
 	"fmt"
 	"time"
@@ -20,7 +21,7 @@ func coarseQuantization(points []types.Point, d int, n int) types.L0Index {
 	fmt.Println("Running coarse quantization")
 	k := 256
 	iterations := 1
-	L0Result := KMeans(points, d, k, iterations)
+	L0Result := helpers.KMeans(points, d, k, iterations)
 
 	fmt.Printf("KMeans generated %d centroids (k=%d)\n", len(L0Result.Centroids), k)
 

@@ -1,4 +1,4 @@
-package algorithms
+package helpers
 
 import (
 	"MQH_THESIS/pkg/types"
@@ -12,38 +12,6 @@ import (
 // 	Point2Centroid  map[int]int
 // 	ResidualVectors []Point
 // }
-
-func ProductPartitioning(data []types.Point, d int, k int, iterations int, m int) []types.L0Index {
-	fullData := make([]types.L0Index, m)
-	divResult := d / m
-
-	// For each sub-space (partition of dimensions)
-	for i := 0; i < m; i++ {
-		// Here we create a new array of points, each point only has the dimensions for this subspace.
-		subspacePoints := make([]types.Point, len(data))
-		start := i * divResult
-		end := start + divResult
-		// if i = m-1 then this must be the last subspace
-		if i == m-1 {
-			end = d
-		}
-
-		// Copy points over with only the dimensions for this subspace
-		for j, point := range data {
-			subspacePoints[j] = types.Point{
-				ID:          point.ID,
-				Coordinates: point.Coordinates[start:end],
-			}
-		}
-
-		// Run k-means on this subspace
-		fullData[i] = KMeans(subspacePoints, end-start, k, iterations)
-	}
-
-	// Run some function here to merge the L0Index structs into a single L0Index struct?
-
-	return fullData
-}
 
 // KMeans performs the k-means clustering algorithm on the given data points and returns L0Result struct.
 func KMeans(data []types.Point, d int, k int, iterations int) types.L0Index {
