@@ -52,13 +52,30 @@ func (h *Hyperplane) Dist2H(p *Point) float32 {
 }
 
 // Dist2P calculates distance from point to another point
-func (i *Point) Dist2P(p *Point) float32 {
+func (p1 *Point) Dist2P(p2 *Point) float32 {
 	sum := float32(0.0)
-	for j := range i.Coordinates {
-		diff := i.Coordinates[j] - p.Coordinates[j]
+	for j, c1 := range p1.Coordinates {
+		diff := c1 - p2.Coordinates[j]
 		sum += diff * diff
 	}
 	return float32(math32.Sqrt(sum))
+}
+
+func (p *Point) L2norm() float32 {
+	sum := float32(0.0)
+	for _, d := range p.Coordinates {
+		sum += d * d
+	}
+	return math32.Sqrt(sum)
+}
+
+func (p1 *Point) Ip(p2 Point) float32 {
+	sum := float32(0.0)
+	coords2 := p2.Coordinates
+	for i, coord1 := range p1.Coordinates {
+		sum += coord1 * coords2[i]
+	}
+	return sum
 }
 
 /*
