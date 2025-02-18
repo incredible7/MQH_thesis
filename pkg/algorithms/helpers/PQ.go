@@ -36,24 +36,24 @@ func ProductPartitioning(data []types.Point, d int, k int, iterations int, m int
 	return fullData
 }
 
-func MergeSubtroids(l []types.L0Index, d int) types.L0Index {
-	mergedCentroids := make([]types.Point, 256)
-	mergedP2C := make(map[int]int)
-	mergedC2Ps := make(map[int][]int)
+// func MergeSubtroids(l []types.L0Index, d int) types.L0Index {
+// 	mergedCentroids := make([]types.Point, 256)
+// 	mergedP2C := make(map[int]int)
+// 	mergedC2Ps := make(map[int][]int)
 
-	for i := 0; i < len(data); i++ {
+// 	for i := 0; i < len(data); i++ {
 		
-		for _,index := range l {
-			for p,c := range index.Point2Centroid {
+// 		for _,index := range l {
+// 			for p,c := range index.Point2Centroid {
 				
-			}
-		}
+// 			}
+// 		}
 
-		mergedCoords := make([]float32, d)
-		k,v := 
+// 		mergedCoords := make([]float32, d);
+// 		k,v := 
 
-	}
+// 	}
 
 
 
-}
+// }
