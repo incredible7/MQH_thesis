@@ -76,7 +76,7 @@ func (p *Point) L2norm() float32 {
 	return math32.Sqrt(sum)
 }
 
-func (p1 *Point) Ip(p2 Point) float32 {
+func (p1 *Point) Ip(p2 *Point) float32 {
 	sum := float32(0.0)
 	coords2 := p2.Coordinates
 	for i, coord1 := range p1.Coordinates {
@@ -91,7 +91,7 @@ func (p1 *Point) Ip(p2 Point) float32 {
 
 // PointDist2Q represents a point and its distance to a query in the priority queue
 type PQPointDist2Q struct {
-	Point Point
+	ID    int
 	Dist  float32
 	Index int // Required by heap.Interface
 }
