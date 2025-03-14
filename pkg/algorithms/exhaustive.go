@@ -2,7 +2,7 @@ package algorithms
 
 import (
 	"MQH_THESIS/pkg/types"
-	"MQH_THESIS/pkg/algorithms/utils"
+	"MQH_THESIS/pkg/utils"
 	"container/heap"
 	"fmt"
 	"slices"
