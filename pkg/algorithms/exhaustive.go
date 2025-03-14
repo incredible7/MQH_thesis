@@ -2,6 +2,7 @@ package algorithms
 
 import (
 	"MQH_THESIS/pkg/types"
+	"MQH_THESIS/pkg/algorithms/utils"
 	"container/heap"
 	"fmt"
 	"os"
@@ -9,31 +10,33 @@ import (
 	"time"
 )
 // creates a index for the points and returns a pointer to it
-func preprocess(points []types.Point, n int, d int) []types.Point {
-		return points
+func preprocess(points []float32, n int, d int) {
+		points = points
 	}
 
-func search(points []types.Point, query types.Hyperplane, k int, MinKList []int) []int {
+func search(points []float32, normal []float32, b float32, n int, d int, k int, MinKList []int) {
 	// create a priority queue
 	pq := make(types.DistancePriorityQueue, 0)
 	heap.Init(&pq)
 
 	// add all points to the priority queue
-	for i := range points {
-		dist := query.Dist2H(&points[i])
-		item := &types.PQPointDist2Q{
-			Point: &points[i],
+	for i := 0; i < n; i++ {
+		point := points[i*d : (i+1)*d]
+		dist := utils.P2H_dist(point, normal, b)
+		itempointer := &types.PQPointDist2Q{
+			ID: i,
 			Dist:  dist,
-
 		}
-		heap.Push(&pq, item)
+		heap.Push(&pq, itempointer)
 	}
 	// get the k nearest neighbors
 	for i := 0; i < k; i++ {
-		MinKList = append(MinKList, heap.Pop(&pq).(*types.PQPointDist2Q).Point.ID)
+		// directly assign the ID to the MinKList since we are using a pointer
+		MinKList[i] = heap.Pop(&pq).(*types.PQPointDist2Q).ID
 	}
-	return MinKList
 }
+
+
 
 // // ExhaustiveFS performs full sort search
 // func ExhaustiveFS(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq int, k int, suffix string) {
