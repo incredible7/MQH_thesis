@@ -11,11 +11,11 @@ import (
 	// "time"
 )
 // creates a index for the points and returns a pointer to it
-func preprocess(points []float32, n int, d int) {
+func Preprocess(points []float32, n int, d int) {
 		points = points
 	}
 
-func search(points []float32, normal []float32, b float32, n int, d int, k int, MinKList []int) {
+func Search(points []float32, normal []float32, b float32, n int, d int, k int, MinKList []int) {
 	// create a priority queue
 	pq := make(types.DistancePriorityQueue, 0)
 	heap.Init(&pq)
