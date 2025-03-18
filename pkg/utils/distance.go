@@ -1,9 +1,5 @@
 package utils
 
-import (
-	"slices"
-)
-
 func P2H_dist(point []float32, normal []float32, b float32) float32 {
 	numerator := b
 	denominator := float32(0.0)
