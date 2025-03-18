@@ -4,11 +4,11 @@ import (
 	"MQH_THESIS/pkg/types"
 	"MQH_THESIS/pkg/utils"
 	"container/heap"
-	"fmt"
-	"slices"
-	"os"
-	"sort"
-	"time"
+	// "fmt"
+	// "slices"
+	// "os"
+	// "sort"
+	// "time"
 )
 // creates a index for the points and returns a pointer to it
 func preprocess(points []float32, n int, d int) {
