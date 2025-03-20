@@ -1,8 +1,8 @@
 package algorithms
 
 import (
-	"MQH_THESIS/pkg/types"
-	"MQH_THESIS/pkg/utils"
+	"MQH_thesis/pkg/types"
+	"MQH_thesis/pkg/utils"
 	"container/heap"
 	// "fmt"
 	// "slices"
@@ -10,10 +10,11 @@ import (
 	// "sort"
 	// "time"
 )
+
 // creates a index for the points and returns a pointer to it
 func Preprocess(points []float32, n int, d int) {
-		points = points
-	}
+	points = points
+}
 
 func Search(points []float32, normal []float32, b float32, n int, d int, k int, MinKList []int) {
 	// create a priority queue
@@ -25,8 +26,8 @@ func Search(points []float32, normal []float32, b float32, n int, d int, k int, 
 		point := points[i*d : (i+1)*d]
 		dist := utils.P2H_dist(point, normal, b)
 		itempointer := &types.PQPointDist2Q{
-			ID: i,
-			Dist:  dist,
+			ID:   i,
+			Dist: dist,
 		}
 		heap.Push(&pq, itempointer)
 	}
@@ -36,8 +37,6 @@ func Search(points []float32, normal []float32, b float32, n int, d int, k int, 
 		MinKList[i] = heap.Pop(&pq).(*types.PQPointDist2Q).ID
 	}
 }
-
-
 
 // // ExhaustiveFS performs full sort search
 // func ExhaustiveFS(dataset string, points []types.Point, hyperplanes []types.Hyperplane, nq int, k int, suffix string) {
