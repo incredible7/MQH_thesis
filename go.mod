@@ -1,4 +1,4 @@
-module MQH_THESIS
+module MQH_thesis
 
 go 1.22
 
