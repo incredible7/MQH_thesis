@@ -4,11 +4,6 @@ import (
 	"MQH_thesis/pkg/types"
 	"MQH_thesis/pkg/utils"
 	"container/heap"
-	// "fmt"
-	// "slices"
-	// "os"
-	// "sort"
-	// "time"
 )
 
 // creates a index for the points and returns a pointer to it

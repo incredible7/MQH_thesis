@@ -1,8 +1,8 @@
-// package algorithms
+package algorithms
 
 // import (
-// 	"MQH_THESIS/pkg/algorithms/helpers"
-// 	"MQH_THESIS/pkg/types"
+// 	"MQH_thesis/pkg/algorithms/helpers"
+// 	"MQH_thesis/pkg/types"
 // 	"fmt"
 // 	"time"
 // )

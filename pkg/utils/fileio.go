@@ -1,11 +1,11 @@
 package utils
 
 import (
-    "encoding/binary"
-    "fmt"
-    "math"
-    "os"
-    "MQH_THESIS/pkg/types"
+	"MQH_thesis/pkg/types"
+	"encoding/binary"
+	"fmt"
+	"math"
+	"os"
 )
 
 // ReadBinaryFile reads a binary file and returns its contents
