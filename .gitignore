@@ -1,4 +1,4 @@
-data/datasets
-data/results
+legacy/data/datasets
+legacy/data/results
 .DS_Store
 .csv
